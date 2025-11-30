@@ -1,13 +1,4 @@
-/* css/style.css
-   Professional Bluish Theme — Header alignment fixed
-   - Complete stylesheet (overwrite existing)
-   - Logo + Tagline vertically centered and properly aligned
-   - All buttons rounded and no black borders (sidebar buttons unchanged)
-   - ONLY header buttons (Export / Help / Import) styled via .user-actions > button
-   - Preserves app IDs/classes used by JS
-*/
 
-/* ---------------- Theme variables ---------------- */
 :root{
   --bg: #eef4fb;
   --header-bg: #f9fbff;
@@ -104,11 +95,7 @@ a { color:inherit; text-decoration:none; }
   align-items:center;
 }
 
-/* ======== HEADER BUTTONS (ONLY THESE ARE STYLED) ========
-   The selector below targets only direct children buttons in .user-actions:
-   .user-actions > button
-   This ensures sidebar and other .btn elements remain unchanged.
-   ========================================================= */
+
 .user-actions > button {
   /* Rounded, modern, no black border */
   padding:8px 14px;
