@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>RF Link Planner | Professional Wireless Network Planning</title>
+    <meta name="description" content="Professional RF Outdoor Link Planner Tool for wireless network planning" />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+</head>
+
+<body>
+<div class="app-container">
+
+    <!-- HEADER -->
+    <header class="app-header">
+        <div class="header-content">
+            <!-- updated structure: .logo contains icon + .brand-text (title + subtitle) -->
+            <div class="logo" role="banner" aria-label="RF Link Planner logo">
+                <span class="logo-icon" aria-hidden="true">📡</span>
+
+                <div class="brand-text" aria-hidden="false">
+                    <div class="title">RF Link Planner</div>
+                    <div class="subtitle">Professional Wireless Network Planning Tool</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="user-actions" role="toolbar" aria-label="Header actions">
+            <!-- Export will be handled by your existing JS (export-btn id expected) -->
+            <button id="export-btn" class="btn-secondary" aria-label="Export project">Export Project</button>
+
+            <!-- help button: small script below will open the help modal -->
+            <button id="help-btn" class="btn-secondary" aria-label="Open help">Help</button>
+
+            <!-- Import: your app.js previously creates an import button dynamically.
+                 If you prefer a static Import button here, you can uncomment this entry and remove the dynamic one in JS.
+                 For now we leave it to your JS so duplication doesn't occur. -->
+            <!-- <button id="import-btn" class="btn-secondary" aria-label="Import project">Import Project</button> -->
+        </div>
+    </header>
+
+    <div class="main-content">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" role="complementary" aria-label="Controls sidebar">
+
+            <!-- TOOL CONTROLS -->
+            <div class="sidebar-section">
+                <h3>Tool Controls</h3>
+
+                <div class="control-group">
+                    <button id="add-tower-btn" class="btn-primary">
+                        <span class="btn-icon" aria-hidden="true">➕</span> Add Tower Mode
+                    </button>
+
+                    <button id="add-link-btn" class="btn-primary">
+                        <span class="btn-icon" aria-hidden="true">🔗</span> Add Link Mode
+                    </button>
+
+                    <button id="clear-all-btn" class="btn-danger">
+                        <span class="btn-icon" aria-hidden="true">🗑️</span> Clear All
+                    </button>
+                </div>
+            </div>
+
+            <!-- TOWER CONFIG -->
+            <div class="sidebar-section">
+                <h3>Tower Configuration</h3>
+
+                <div id="tower-config" class="config-panel hidden">
+
+                    <div class="form-group">
+                        <label for="tower-frequency">Frequency (GHz)</label>
+                        <select id="tower-frequency" class="form-control">
+                            <option value="2.4">2.4 GHz</option>
+                            <option value="5.0" selected>5.0 GHz</option>
+                            <option value="5.8">5.8 GHz</option>
+                            <option value="6.0">6.0 GHz</option>
+                            <option value="10.0">10.0 GHz</option>
+                            <option value="24.0">24.0 GHz</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tower-name">Tower Name</label>
+                        <input id="tower-name" class="form-control" type="text" placeholder="Tower A" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tower-height">Height (m)</label>
+                        <input id="tower-height" class="form-control" type="number" min="1" value="30" />
+                    </div>
+
+                    <button id="save-tower-btn" class="btn-primary">Save Configuration</button>
+                    <button id="delete-tower-btn" class="btn-danger">Delete Tower</button>
+                </div>
+
+                <div id="no-tower-selected" class="placeholder">Select a tower to configure</div>
+            </div>
+
+            <!-- LINK INFORMATION -->
+            <div class="sidebar-section">
+                <h3>Link Information</h3>
+
+                <div id="link-info" class="info-panel hidden">
+
+                    <div class="info-item">
+                        <span class="info-label">Distance:</span>
+                        <span id="link-distance" class="info-value">-</span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label">Frequency:</span>
+                        <span id="link-frequency" class="info-value">-</span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="info-label">Status:</span>
+                        <span id="link-status" class="info-value">-</span>
+                    </div>
+
+                    <button id="show-fresnel-btn" class="btn-primary">Show Fresnel Zone</button>
+
+                    <button id="view-fresnel-structure" class="btn-primary" style="margin-top:10px;">
+                        📡 View Fresnel Structure
+                    </button>
+
+                    <button id="delete-link-btn" class="btn-danger">Delete Link</button>
+                </div>
+
+                <div id="no-link-selected" class="placeholder">Select a link to view details</div>
+            </div>
+
+        </aside>
+
+        <!-- MAP AREA -->
+        <main class="map-container" role="main">
+            <div id="map" aria-label="Map"></div>
+
+            <div class="map-controls" aria-hidden="false">
+                <button id="zoom-in" class="map-control-btn" aria-label="Zoom in">+</button>
+                <button id="zoom-out" class="map-control-btn" aria-label="Zoom out">-</button>
+            </div>
+
+            <div class="map-overlay">
+                <div class="status-bar">
+                    <span id="current-mode">Current Mode: Navigation</span>
+                    <span id="coordinates">Lat: 0, Lng: 0</span>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- FRESNEL MODAL -->
+    <div id="fresnel-modal" class="modal hidden" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="fresnel-title">
+            <div class="modal-header">
+                <h2 id="fresnel-title">Fresnel Zone Analysis</h2>
+                <button id="close-modal" class="close-btn" aria-label="Close">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="fresnel-visualization">
+                    <canvas id="fresnel-canvas" width="600" height="400"></canvas>
+                </div>
+
+                <div class="fresnel-info">
+                    <h3>First Fresnel Zone Parameters</h3>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Frequency:</span>
+                            <span id="fresnel-frequency" class="info-value">-</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">Wavelength:</span>
+                            <span id="fresnel-wavelength" class="info-value">-</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">Link Distance:</span>
+                            <span id="fresnel-distance" class="info-value">-</span>
+                        </div>
+
+                        <div class="info-item">
+                            <span class="info-label">Max Radius:</span>
+                            <span id="fresnel-max-radius" class="info-value">-</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- HELP MODAL (NEW) -->
+    <div id="help-modal" class="modal hidden" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="help-title">
+            <div class="modal-header">
+                <h2 id="help-title">Help — RF Link Planner</h2>
+                <button id="help-close" class="close-btn" aria-label="Close help">&times;</button>
+            </div>
+
+            <div class="modal-body" style="display:flex; gap:20px; flex-wrap:wrap;">
+                <div style="flex:1 1 320px;">
+                    <h3>Quick Steps</h3>
+                    <ol>
+                        <li><strong>Add Tower Mode:</strong> Click <em>Add Tower Mode</em>, then click on map to place a tower.</li>
+                        <li><strong>Configure Tower:</strong> Select the tower and set frequency/name/height then Save.</li>
+                        <li><strong>Add Link Mode:</strong> Click <em>Add Link Mode</em>, click source tower then destination to create a link.</li>
+                        <li><strong>Fresnel:</strong> Select a link then click <em>Show Fresnel Zone</em>.</li>
+                    </ol>
+                </div>
+
+                <div style="flex:1 1 240px;">
+                    <h3>Tips</h3>
+                    <ul>
+                        <li>Set tower frequencies before connecting to ensure link uses the right value.</li>
+                        <li>Use <strong>Delete</strong> to remove selected tower or link quickly.</li>
+                        <li>Use Export / Import to save/load projects.</li>
+                    </ul>
+                </div>
+
+                <div style="flex:1 1 200px;">
+                    <h3>Shortcuts</h3>
+                    <ul>
+                        <li><strong>Esc</strong> — Exit add modes / close modals</li>
+                        <li><strong>Delete</strong> — Remove selected tower/link</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:16px;">
+                <button id="help-done" class="btn-primary">Got it</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/towers.js"></script>
+<script src="js/links.js"></script>
+<script src="js/fresnel.js"></script>
+<script src="js/map.js"></script>
+<script src="js/app.js"></script>
+
+<!-- tiny header help wiring (safe, minimal) -->
+<script>
+  // open/close help modal — small, independent script so Help button works immediately
+  (function () {
+    const helpBtn = document.getElementById('help-btn');
+    const helpModal = document.getElementById('help-modal');
+    const helpClose = document.getElementById('help-close');
+    const helpDone = document.getElementById('help-done');
+
+    if (helpBtn && helpModal) {
+      helpBtn.addEventListener('click', () => {
+        helpModal.classList.remove('hidden');
+        helpModal.setAttribute('aria-hidden', 'false');
+      });
+    }
+    if (helpClose) helpClose.addEventListener('click', () => {
+      helpModal.classList.add('hidden');
+      helpModal.setAttribute('aria-hidden', 'true');
+    });
+    if (helpDone) helpDone.addEventListener('click', () => {
+      helpModal.classList.add('hidden');
+      helpModal.setAttribute('aria-hidden', 'true');
+    });
+
+    // also close modal with Esc
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (!helpModal.classList.contains('hidden')) {
+          helpModal.classList.add('hidden');
+          helpModal.setAttribute('aria-hidden', 'true');
+        }
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

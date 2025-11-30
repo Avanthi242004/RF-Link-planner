@@ -1,0 +1,327 @@
+/* css/style.css
+   Professional Bluish Theme — Header alignment fixed
+   - Complete stylesheet (overwrite existing)
+   - Logo + Tagline vertically centered and properly aligned
+   - All buttons rounded and no black borders (sidebar buttons unchanged)
+   - ONLY header buttons (Export / Help / Import) styled via .user-actions > button
+   - Preserves app IDs/classes used by JS
+*/
+
+/* ---------------- Theme variables ---------------- */
+:root{
+  --bg: #eef4fb;
+  --header-bg: #f9fbff;
+  --panel: #ffffff;
+  --muted: #556272;
+  --text: #0b1220;
+  --accent: #34435a;
+  --accent-2: #243240;
+  --accent-voice: #3f74d6;
+  --success: #10b981;
+  --danger: #ef4444;
+  --panel-border: #e6eef8;
+  --radius: 16px;
+  --card-shadow: 0 12px 36px rgba(35,46,66,0.06);
+  --small-shadow: 0 6px 18px rgba(35,46,66,0.04);
+  --ease: cubic-bezier(.2,.9,.2,1);
+}
+
+/* ---------------- Reset / base ---------------- */
+* { box-sizing: border-box; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+html,body { height:100%; margin:0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); color:var(--text); }
+a { color:inherit; text-decoration:none; }
+
+/* ---------------- App shell ---------------- */
+.app-container { display:flex; flex-direction:column; min-height:100vh; }
+
+/* ---------------- Header (fixed & centered) ---------------- */
+.app-header {
+  height:72px;                             /* slightly taller for breathing room */
+  display:flex;
+  align-items:center;                      /* vertical centering */
+  justify-content:space-between;
+  padding:12px 22px;
+  background: var(--header-bg);
+  border-bottom: 1px solid rgba(36,50,70,0.04);
+  position:sticky;
+  top:0;
+  z-index:1400;
+  box-shadow: 0 8px 30px rgba(32,45,65,0.03);
+}
+
+/* thin accent strip at top (subtle brand color) */
+.app-header::before {
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  height:4px;
+  background: linear-gradient(90deg, rgba(63,116,214,0.9), rgba(52,78,90,0.9));
+  z-index:1405;
+}
+
+/* BRAND block: logo + tagline aligned properly */
+.header-content {
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  margin-left:6px;
+  min-width:0;
+}
+
+/* logo area: icon and product name */
+.logo {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+  font-size:18px;
+  color:var(--accent-2);
+  white-space:nowrap;
+  margin:0;
+}
+
+/* small icon (emoji or svg) */
+.logo-icon { font-size:20px; line-height:1; }
+
+/* tagline placed to the right (or below on narrow screens) but vertically centered with logo */
+.tagline {
+  font-size:13px;
+  color:var(--muted);
+  line-height:1;
+  display:block;
+  opacity:0.95;
+}
+
+/* allow the brand area to shrink gracefully */
+.header-left { display:flex; align-items:center; gap:12px; min-width:0; }
+
+/* user actions (right side buttons) */
+.user-actions {
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+/* ======== HEADER BUTTONS (ONLY THESE ARE STYLED) ========
+   The selector below targets only direct children buttons in .user-actions:
+   .user-actions > button
+   This ensures sidebar and other .btn elements remain unchanged.
+   ========================================================= */
+.user-actions > button {
+  /* Rounded, modern, no black border */
+  padding:8px 14px;
+  border-radius:12px;        /* rounded corners */
+  border: none;              /* NO BLACK BORDER */
+  background: #ffffff;       /* soft white */
+  color: var(--text);
+  font-weight:700;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.06);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform .14s var(--ease), box-shadow .14s var(--ease), background .12s ease;
+}
+
+/* Export button subtle style (keeps it neutral but polished) */
+.user-actions > button#export-btn {
+  background: linear-gradient(180deg, #f7fbff, #ffffff);
+  border: 1px solid var(--panel-border);
+}
+
+/* Help button light accent */
+.user-actions > button#help-btn {
+  background: linear-gradient(180deg, #f5f9ff, #ffffff);
+  border: 1px solid var(--panel-border);
+}
+
+/* Import button - if you give it an id of import-btn in HTML, it will pick this style.
+   If not, the default .user-actions > button style still applies. */
+.user-actions > button#import-btn,
+.user-actions > button#import-btn[aria-label] {
+  background: linear-gradient(180deg, #fff7fb, #fff);
+  border: 1px solid var(--panel-border);
+}
+
+/* hover/active */
+.user-actions > button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(16,24,40,0.10);
+  background: #f4f8ff;
+}
+
+/* ensure focus ring for accessibility */
+.user-actions > button:focus {
+  outline: 3px solid rgba(63,116,214,0.10);
+  outline-offset: 2px;
+}
+
+/* ---------------- Main layout: sidebar + map ---------------- */
+.main-content { display:flex; gap:18px; padding:18px; flex:1 1 auto; align-items:stretch; height: calc(100vh - 72px - 18px); }
+
+/* ---------------- Sidebar (with left accent bar) ---------------- */
+.sidebar {
+  width:360px;
+  min-width:280px;
+  border-radius:18px;
+  padding:18px;
+  background: linear-gradient(180deg, var(--panel), #fbfdff);
+  border:1px solid var(--panel-border);
+  box-shadow: var(--card-shadow);
+  position:relative;
+  overflow:auto;
+}
+
+/* decorative left accent strip */
+.sidebar::before {
+  content:"";
+  position:absolute; left:0; top:0; bottom:0; width:6px;
+  border-top-left-radius:18px; border-bottom-left-radius:18px;
+  background: linear-gradient(180deg, rgba(63,116,214,0.95), rgba(52,78,90,0.9));
+  box-shadow: 0 6px 18px rgba(63,116,214,0.06);
+}
+.sidebar > * { position:relative; z-index:2; }
+
+.sidebar-section { margin-bottom:22px; }
+.sidebar-section h3 { margin:0 0 12px 0; color:var(--muted); font-size:14px; font-weight:700; }
+
+/* ---------------- Buttons (rounded, no black borders) ---------------- */
+.control-group { display:flex; flex-direction:column; gap:12px; }
+
+.btn, .btn-primary, .btn-secondary-soft, .btn-ghost, .btn-danger {
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  padding:12px 14px; border-radius:var(--radius); cursor:pointer; font-weight:700;
+  transition: transform .14s var(--ease), box-shadow .14s var(--ease);
+  border:none;   /* NO black borders */
+  -webkit-appearance:none; -moz-appearance:none;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  color:#fff;
+  box-shadow: 0 10px 30px rgba(36,50,70,0.10);
+}
+.btn-primary:hover { transform: translateY(-2px); }
+
+.btn-secondary-soft {
+  background: linear-gradient(180deg, #fff, #fbfdff);
+  color:var(--text);
+  box-shadow: 0 6px 18px rgba(16,24,40,0.03);
+}
+
+.btn-ghost { background: rgba(11,17,28,0.03); color:var(--text); }
+
+.btn-danger { background: linear-gradient(180deg,#ff7b7b,#ef4444); color:#fff; }
+
+#add-tower-btn, #add-link-btn, #clear-all-btn,
+#save-tower-btn, #delete-tower-btn,
+#show-fresnel-btn, #view-fresnel-structure, #delete-link-btn {
+  width:100%;
+  padding:12px 14px;
+  font-size:14px;
+  border-radius:var(--radius);
+  border:none;
+  box-shadow: 0 8px 18px rgba(36,50,70,0.06);
+}
+
+#save-tower-btn { margin-bottom:12px; }
+#delete-tower-btn { margin-top:4px; }
+
+.btn .btn-icon { font-size:14px; opacity:0.95; }
+
+.btn:focus, .form-control:focus, .input:focus { outline:none; box-shadow:0 8px 30px rgba(63,116,214,0.10); }
+
+/* ---------------- Forms & inputs ---------------- */
+.form-group { display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+.form-group label { font-size:13px; color:var(--muted); font-weight:600; }
+.form-control, .input, select {
+  padding:10px 12px; border-radius:12px; border:1px solid var(--panel-border); background:#fff; color:var(--text);
+  font-size:14px; transition: box-shadow .12s var(--ease), border-color .12s var(--ease);
+}
+
+.field-group { display:flex; gap:10px; }
+.field-group > * { flex:1; }
+
+.field-hint { font-size:12px; color:var(--muted); margin-top:6px; }
+.placeholder { padding:20px; text-align:center; color:var(--muted); font-style:italic; }
+
+.config-panel { background: linear-gradient(180deg,#fff,#fbfdff); padding:12px; border-radius:12px; border:1px solid var(--panel-border); }
+
+/* ---------------- Link info (alignment fixes) ---------------- */
+#link-info { display:block; }
+#link-info .info-item { margin-bottom:12px; }
+#link-info .info-item .info-label { display:inline-block; }
+#link-info .info-item .info-value { font-weight:700; color:var(--text); }
+
+#show-fresnel-btn, #view-fresnel-structure, #delete-link-btn {
+  display:block; width:100%; margin:0 0 10px 0; padding:12px 14px; text-align:center; border:none;
+  box-shadow: 0 8px 18px rgba(36,50,70,0.06); border-radius:var(--radius);
+}
+#show-fresnel-btn { background: linear-gradient(180deg, var(--accent), var(--accent-2)); color:#fff; }
+#view-fresnel-structure { background: linear-gradient(180deg, var(--accent), var(--accent-2)); color:#fff; }
+#delete-link-btn { background: linear-gradient(180deg,#ff7b7b,#ef4444); color:#fff; margin-top:4px; }
+
+#no-link-selected { padding:12px 6px; text-align:center; color:var(--muted); font-style:italic; }
+
+/* ---------------- Link list ---------------- */
+#link-list { margin-top:12px; max-height:260px; overflow:auto; }
+.link-row { display:flex; justify-content:space-between; align-items:center; padding:10px; border-radius:12px; background:#fff; border:1px solid var(--panel-border); margin-bottom:8px; cursor:pointer; transition: transform .12s var(--ease), box-shadow .12s var(--ease); }
+.link-row:hover { transform: translateY(-3px); box-shadow:var(--small-shadow); }
+.link-row .title { font-size:13px; font-weight:700; color:var(--text); }
+.link-row .meta { font-size:12px; color:var(--muted); }
+.link-row.selected { border-color: var(--accent-voice); box-shadow: 0 12px 36px rgba(63,116,214,0.06); background: linear-gradient(180deg,#fff,#fbfdff); }
+
+/* ---------------- Map container ---------------- */
+.map-container { flex:1 1 auto; height:100%; border-radius:18px; overflow:hidden; position:relative; border:1px solid var(--panel-border); box-shadow:var(--card-shadow); background: linear-gradient(180deg,#f8fbff,#eef6fb); }
+#map { width:100%; height:100%; display:block; }
+
+/* map controls */
+.map-controls { position:absolute; right:14px; top:14px; display:flex; flex-direction:column; gap:10px; z-index:1200; }
+.map-control-btn { width:42px; height:42px; border-radius:12px; background:#fff; font-size:18px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:var(--small-shadow); border:none; }
+
+/* overlay status */
+.map-overlay { position:absolute; left:14px; bottom:14px; z-index:1200; }
+.status-bar { padding:8px 12px; border-radius:12px; background:#fff; border:1px solid var(--panel-border); color:var(--muted); box-shadow:var(--small-shadow); font-size:13px; }
+
+/* ---------------- Fresnel modal ---------------- */
+.modal { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; background: rgba(15,23,42,0.45); z-index:2200; }
+.modal.hidden { display:none; }
+.modal-content { width:92%; max-width:1100px; background:#fff; padding:18px; border-radius:14px; box-shadow:0 30px 90px rgba(15,23,42,0.12); border:1px solid var(--panel-border); }
+.modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.close-btn { background:transparent; border:none; font-size:22px; cursor:pointer; color:var(--text); }
+
+/* fresnel layout */
+.fresnel-visualization { width:66%; float:left; }
+.fresnel-info { width:32%; float:right; padding-left:18px; display:flex; flex-direction:column; gap:10px; }
+.info-grid { display:flex; flex-direction:column; gap:10px; }
+.info-grid .info-item { display:flex; justify-content:space-between; align-items:center; padding:10px; border-radius:12px; background:#fff; border:1px solid var(--panel-border); }
+
+/* fresco canvas */
+#fresnel-canvas { width:100%; height:380px; border-radius:12px; background: linear-gradient(180deg,#fbfdff,#eef7fb); border:1px solid var(--panel-border); }
+
+/* ---------------- Analytics / cards ---------------- */
+.analytics-panel { margin-top:12px; }
+.cards-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; }
+.card { background:#fff; border-radius:12px; padding:12px; border:1px solid var(--panel-border); box-shadow:var(--small-shadow); }
+.big-number { font-size:20px; font-weight:800; color:var(--text); }
+
+/* ---------------- Spacing & accessibility ---------------- */
+.sidebar-section { margin-bottom: 26px; }
+.form-group + .form-group { margin-top:6px; }
+button:focus { outline: 3px solid rgba(63,116,214,0.10); outline-offset: 2px; }
+
+/* ---------------- Responsive rules ---------------- */
+@media (max-width:1000px){ .sidebar { width:320px; } }
+@media (max-width:820px){
+  .main-content { flex-direction:column; gap:12px; padding:12px; height:auto; }
+  .sidebar { width:100%; min-width:auto; height:auto; padding-bottom:14px; }
+  .map-container { height:60vh; }
+  .fresnel-visualization, .fresnel-info { width:100%; float:none; padding-left:0; }
+  .cards-grid { grid-template-columns: 1fr; }
+}
+
+/* Help modal tweaks: reuse existing .modal & .modal-content styles */
+#help-modal .modal-content { max-width:900px; border-radius:12px; padding:18px; }
+#help-modal .modal-body { max-height:60vh; overflow:auto; }

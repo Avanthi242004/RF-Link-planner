@@ -1,0 +1,78 @@
+/* Tablet and Mobile Styles */
+@media (max-width: 1024px) {
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        max-height: 40vh;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .sidebar-sections {
+        display: flex;
+        gap: 2rem;
+        overflow-x: auto;
+    }
+    
+    .sidebar-section {
+        min-width: 280px;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .user-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 1rem;
+    }
+    
+    .modal-body {
+        flex-direction: column;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    #fresnel-canvas {
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        padding: 1rem;
+    }
+    
+    .sidebar-section h3 {
+        font-size: 1rem;
+    }
+    
+    .control-group {
+        gap: 0.25rem;
+    }
+    
+    .btn-primary, .btn-secondary, .btn-danger {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    .status-bar {
+        flex-direction: column;
+        gap: 0.25rem;
+        font-size: 0.8rem;
+    }
+}
